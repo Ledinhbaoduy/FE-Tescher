@@ -36,8 +36,8 @@ class LoginScreen extends Component<ILoginProps, ILoginState>{
     constructor(props: ILoginProps) {
         super(props)
         this.state = {
-            email: "thi12171999@gmail.com",
-            mat_khau: "Test123",
+            email: "",
+            mat_khau: "",
             show_alert: 'none',
             // showPassword: false,
         }
