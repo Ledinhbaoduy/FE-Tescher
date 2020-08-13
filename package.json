@@ -41,6 +41,7 @@
     "rxjs-compat": "^6.5.4"
   },
   "scripts": {
+    "dev": "serve -s dev",
     "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
