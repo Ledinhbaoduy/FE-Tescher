@@ -1,0 +1,83 @@
+.action-container {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    .button-creat-multiple-choice {
+        display: flex;
+        padding-top: 1rem;
+        align-items: center;
+    }
+    .button-creat-essay {
+        padding: 0.5rem;
+        padding-top: 1.5rem;
+    }
+    .create-quetion {
+    }
+    .search {
+        justify-content: left;
+        margin-left: 0.5rem;
+    }
+    .select-species {
+        display: flex;
+        padding: 0.5rem;
+        padding-top: 1rem;
+        justify-content: center;
+        align-items: center;
+    }
+    .Question-topic {
+        margin-left: -3px;
+        margin-top: 7px;
+    }
+    .btn-search-question {
+        margin-left: auto;
+        align-items: center;
+        height: fit-content;
+        margin-top: 30px;
+    }
+}
+.input-data {
+    // .name-question {
+    //     display: flex;
+    //     flex-direction: column-reverse;
+    //     padding: 0.5rem;
+    //     justify-content: space-between;
+    //     align-items: center;
+    // }
+    // .answer {
+    //     display: flex;
+    //     flex-direction: column-reverse;
+    //     padding: 0.5rem;
+    //     justify-content: space-between;
+    //     align-items: center;
+    // }
+    .group-topic-questionCombobox {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        flex-direction: row;
+        .question-combobox {
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 0.5rem;
+            padding-top: 1rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .input-topic {
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 0.5rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+    }
+
+    // .score {
+    //     display: flex;
+    //     flex-direction: column-reverse;
+    //     padding: 0.5rem;
+    //     justify-content: space-between;
+    //     align-items: center;
+    // }
+}

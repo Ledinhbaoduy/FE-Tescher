@@ -1,0 +1,30 @@
+.avatar-container {
+    background: #6fc3fc;
+    margin-top: -1rem;
+    .content {
+        display: flex;
+        flex-direction: row;
+        padding: 2rem;
+        justify-content: space-evenly;
+        align-items: center;
+        .user-name {
+            font-weight: bold;
+            color: #000000;
+        }
+        .avatar {
+            height: 3rem;
+            width: 3rem;
+            padding: 2rem;
+            background: rgb(195, 211, 255);
+        }
+
+        .user-info {
+            padding: 1rem;
+            .button-profile {
+                margin: -0.5rem;
+                padding-top: 0.4rem;
+                color: #000000;
+            }
+        }
+    }
+}

@@ -1,0 +1,195 @@
+diff a/frontend/src/screens/manage-question/manage-question.tsx b/frontend/src/screens/manage-question/manage-question.tsx	(rejected hunks)
+@@ -1,17 +1,24 @@
+ import React, { Component } from 'react'
+ import './manage-question.scss';
+-import { TableQuestData, TableConfig, tableEssay } from '../../models/table-model'
++import { TableConfig } from '../../models/table-model'
+ import { MyInput } from '../../shared/components/my-input/my-input';
+ import MyButton from '../../shared/components/my-button/my-button';
+ import AddCircleIcon from '@material-ui/icons/AddCircle';
+ import BoxContainer from '../../shared/components/box-container/box-container';
+ import ManageQuestionDialog, { IManageQuestionDialogState } from './manage-question-dialog';
+ import { MODE } from '../../constants/common.constants';
+-import MyTableComponent from '../../shared/components/my-table';
++import MyTableComponent from '../../shared/components/my-table/my-table';
+ import MySelect from '../../shared/components/my-select';
+ import { Dropdown, GridSetting } from '../../models/common.model';
+ import { QuestionService } from '../../service/question.service';
+ import CommonService from '../../service/common.service';
++import MyAutocomplete from '../../shared/components/my-autocomplete';
++import { connect } from 'react-redux';
++import { bindActionCreators } from 'redux';
++import { Observable } from 'rxjs';
++import MyTooltipComponent from '../../shared/components/my-tooltip';
++import SearchIcon from '@material-ui/icons/Search';
++
+ 
+ const dataTopicCombobox: Dropdown[] = [
+     {
+@@ -31,16 +38,18 @@
+     questionType: Dropdown;
+     search: string;
+     tableConfigEssay: TableConfig;
+-    gridSetting: GridSetting,
++    gridSetting: GridSetting;
++    topic: Dropdown[];
+ 
+ }
+-export default class ManageQuestionScreen extends Component<{}, IManageQuestionState> {
++class ManageQuestionScreen extends Component<{ listTopic: any }, IManageQuestionState> {
+     private questionService = new QuestionService();
+     private commonService = new CommonService();
+ 
+     constructor(props: any) {
+         super(props);
+         this.state = {
++            topic: [],
+             gridSetting: new GridSetting(),
+             openDialog: false,
+             mode: MODE.ADD,
+@@ -87,14 +96,17 @@
+     componentDidMount() {
+         this.onSearch();
+     }
+-    // 
++
++    // hàm đổ api vào bảng 
+     onSearch() {
+         const questionType = this.state.questionType.id === '1';
+         const body = { gridSetting: this.state.gridSetting };
+         const search = questionType ?
+-            this.questionService.searchQuestionMultipleChoice(body) : this.questionService.searchQuestionEssay(body);
++            this.questionService.searchQuestionMultipleChoice(body) :
++            this.questionService.searchQuestionEssay(body);
+         search.subscribe(res => {
+             if (res && res.length) {
++                res = res.map((s: any) => ({ ...s, id: s._id }));
+                 if (questionType) {
+                     this.setState({
+                         tableConfigMultipleChoice: {
+@@ -116,6 +128,7 @@
+         });
+     }
+ 
++    // hàm map lại các cột đáp án 
+     formatDataMultipleQuestion = (data: any) => {
+         const tableData = data.map((row: any) => {
+             row.answers = row.answers.map((s: any, i: number) => ({
+@@ -133,10 +146,10 @@
+ 
+ 
+     toggleDialog = () => {
+-
+         this.setState({ openDialog: !this.state.openDialog })
+     }
+ 
++    // hàm thêm câu hỏi
+     onSubmit = (item: IManageQuestionDialogState) => {
+         const type = this.state.questionType.id === '1';
+         type ?
+@@ -152,6 +165,7 @@
+             })
+     }
+ 
++    // hàm lấy id question type
+     onSelectQuestionType = (id: string) => {
+         const questionType = dataTopicCombobox.find(s => s.id === id)!;
+         this.setState({ questionType: questionType }, () => {
+@@ -159,24 +173,44 @@
+         })
+     }
+ 
++    // hàm sắp sếp theo cột
+     onSortData = (gridSetting: GridSetting) => {
+         this.setState({ gridSetting }, () => {
+             this.onSearch();
+         });
+     }
+ 
++    //hàm lấy api chủ đề
++    onChangeTopic = (ids: Dropdown[]) => {
++        let data = this.props.listTopic.filter((s: Dropdown) => ids.includes(s.id));
++        this.setState({ topic: data });
++    }
++
++    onDelete = (id: string) => {
++        const type = this.state.questionType.id === "1";
++        const obDeleteItem: Observable<any> = type ? this.questionService.deleteMultipleChoiceQuestion({ id }) : this.questionService.deleteEssay({ id })
++        obDeleteItem.subscribe(res => {
++            if (res.success) {
++                this.onSearch();
++            }
++        })
++    }
++
+     render() {
+         const type = this.state.questionType.id === '1';
++        const listTopic = this.props.listTopic || [];
++        const tableConfig = type ? this.state.tableConfigMultipleChoice : this.state.tableConfigEssay;
+         return (
+             <BoxContainer header='Quản Lý Câu Hỏi'>
+                 <div className='action-container'>
+                     <div className="button-creat">
+-                        <MyButton label="Tạo câu hỏi" onClick={this.toggleDialog} startIcon={<AddCircleIcon />} />
++
++                        <MyTooltipComponent title="Thêm Câu Hỏi" onClick={this.toggleDialog} />
+                     </div>
+                     <div className="search">
+                         <MyInput
+                             variant="outlined"
+-                            label='Search...'
++                            label='Tìm Kiếm Câu Hỏi'
+                             value={this.state.search}
+                             onChange={(value: string) => this.setState({ search: value })} />
+                     </div>
+@@ -189,17 +223,23 @@
+ 
+                         />
+                     </div>
++                    <MyAutocomplete
++                        className="topic-question"
++                        label="chủ đề"
++                        onChange={this.onChangeTopic}
++                        value={this.state.topic}
++                        multiple
++                        items={listTopic}
++                        multiline={true}
++                    />
++                    <MyButton className="button-search" label="tìm kiếm" onClick={null} startIcon={<SearchIcon />} />
+                 </div>
+                 {/* bảng câu hỏi */}
+-                {type ? <MyTableComponent
+-                    tableConfig={this.state.tableConfigMultipleChoice}
++                <MyTableComponent
++                    tableConfig={tableConfig}
+                     sort={this.onSortData}
+-                /> :
+-                    <MyTableComponent
+-                        tableConfig={this.state.tableConfigEssay}
+-                        sort={this.onSortData}
+-                    />
+-                }
++                    delete={this.onDelete}
++                />
+                 <ManageQuestionDialog
+                     openDialog={this.state.openDialog}
+                     toggleDialog={this.toggleDialog}
+@@ -210,4 +250,16 @@
+             </BoxContainer>
+         )
+     }
+-} 
++}
++const mapStateToProps = (state: any) => {
++    return {
++        listTopic: state.data.listTopic,
++    };
++};
++
++const mapDispatchToProps = (dispatch: any) => {
++    const actionsCreator = {};
++    const action = bindActionCreators(actionsCreator, dispatch);
++    return { ...action };
++}
++export default connect(mapStateToProps, mapDispatchToProps)(ManageQuestionScreen);
+\ No newline at end of file

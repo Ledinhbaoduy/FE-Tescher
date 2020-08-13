@@ -1,0 +1,18 @@
+.question-header {
+    display: flex;
+    justify-content: right;
+    padding: 1rem;
+    margin-top: -1rem;
+    align-items: baseline;
+    .content-question {
+    }
+    .btn-update-question {
+        margin-right: -2rem;
+        margin-top: -1rem;
+        display: flex;
+    }
+    .btn-add-question {
+        margin-left: auto;
+        align-items: center;
+    }
+}

@@ -1,0 +1,48 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    transition: 0.3s;
+    .login-paper {
+        background-image: linear-gradient(to bottom, white, white);
+    }
+    .login-content {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        margin: 2rem;
+        transition: 0.3s;
+        .login-title {
+            padding-bottom: 50px;
+            font-weight: bold;
+            color: #3f4d60;
+        }
+        .login-input {
+            width: 111%;
+            margin-top: 5px;
+            font-size: 12px;
+            margin-left: -16px;
+        }
+
+        .signUpText {
+            &:hover {
+                color: #00a19c;
+            }
+            transition: 0.3s;
+            cursor: pointer;
+            font-weight: bold;
+            color: #3f4d60;
+            margin: 12px 8px;
+            font-size: 12px;
+            text-align: end;
+        }
+
+        .btn-login {
+            margin-top: 0px;
+            margin-bottom: -7px;
+            margin-left: -13px;
+            width: 110%;
+            border-radius: 20px;
+            background-image: linear-gradient(to right, #536976, #292e49);
+        }
+    }
+}

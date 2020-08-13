@@ -1,0 +1,80 @@
+.managetest-container {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    .search-filter {
+        justify-content: left;
+        margin-left: 0.5rem;
+    }
+    .topic-test {
+        margin-left: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    .search-test {
+        margin-left: auto;
+        align-items: center;
+    }
+}
+.group-name-score-time {
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+    .name-test {
+        width: 100%;
+    }
+    .score {
+        display: flex;
+        padding: 0.23rem;
+        width: 36%;
+    }
+    .time-test {
+        width: 36%;
+        margin-left: 0.2rem;
+        margin-top: 1rem;
+    }
+}
+
+.group-class-date {
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+    .class {
+        display: flex;
+        align-items: baseline;
+        flex-direction: row;
+        padding: 0.2rem;
+    }
+    .time-start-test {
+        width: 40%;
+        margin-right: 4px;
+
+    }
+}
+
+.btn-create {
+    padding: 1rem;
+    display: flex;
+    .btn-add {
+        padding-left: 0.5rem;
+    }
+    .go-back {
+        margin-left: 872px;
+    }
+}
+.test-content-dialog {
+    display: flex;
+    align-items: baseline;
+    .select-type-question {
+        margin-left: 6px;
+        display: flex;
+    }
+    .topic-question {
+        margin-top: auto;
+        margin-bottom: 8px;
+        margin-left: 7px;
+        width: 45%;
+    }
+    .btn-search{
+        margin-left: 82px;
+    }
+}

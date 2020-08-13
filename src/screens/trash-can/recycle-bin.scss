@@ -1,0 +1,26 @@
+.trashCan-container {
+    display: flex;
+    justify-content: flex-start;
+
+    .search-filter {
+        margin: 0.2px;
+    }
+    .trash-topic {
+        margin: 17px;
+        margin-left: 5px;
+    }
+    .trash-option {
+        margin: 17px;
+        margin-left: 7px;
+    }
+    .class {
+        margin: 17px;
+        margin-left: -12px;
+    }
+    .btn-search-trash {
+        margin-left: auto;
+        align-items: center;
+        height: fit-content;
+        margin-top: 30px;
+    }
+}

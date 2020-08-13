@@ -1,0 +1,12 @@
+.box-container {
+    .header {
+        padding-bottom: 10px;
+        font-weight: bold;
+    }
+    .content {
+        border-radius: 10px;
+        background: white;
+        padding: 20px;
+        box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.3);
+    }
+}
