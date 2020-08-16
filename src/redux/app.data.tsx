@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getListTopic, getListClass, onLogin, getInfoUser, showSnackbar } from '../redux/actionCreator/actionCreator';
+import { getListTopic, getListClass, onLogin, getInfoUser, showSnackbar,getAvatar } from '../redux/actionCreator/actionCreator';
 import CommonService from '../service/common.service';
 import { Dropdown, SnackbarModel } from '../models/common.model';
 import AuthorizedService from '../service/authorized.service';
@@ -17,6 +17,7 @@ interface IAppDataProp {
     getInfoUser?: any;
     snackbar: SnackbarModel;
     showSnackbar: any;
+    getAvatar:any
 }
 
 class AppData extends Component<IAppDataProp>{
@@ -39,6 +40,7 @@ class AppData extends Component<IAppDataProp>{
     // lấy api danh_mục 
     getData = () => {
         this.commonService.getTopic().subscribe((res: Dropdown[]) => {
+            console.log(res);
             if (res && res.length) {
                 this.props.getListTopic(res);
             }
@@ -48,6 +50,7 @@ class AppData extends Component<IAppDataProp>{
     getDataClass = () => {
         const idUser = this.authenService.getIdUsers()
         idUser && this.commonService.getDropdownClass(idUser).subscribe((res: any[]) => {
+            console.log(res);
             if (res && res.length) {
                 res = res.map(item => ({ ...item, id: item._id }))
                 this.props.getListClass(res);
@@ -58,6 +61,7 @@ class AppData extends Component<IAppDataProp>{
     getInformation = () => {
         const idUser = this.authenService.getIdUsers()
         idUser && this.commonService.getInfo(idUser).subscribe((res: any) => {
+            this.props.getAvatar(res.anh_dai_dien)
             if (res) {
                 const fullName = `${res.ho} ${res.ten}`;
                 res.fullName = fullName;
@@ -102,7 +106,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-    const actionsCreator = { getListTopic, getListClass, onLogin, getInfoUser, showSnackbar };
+    const actionsCreator = { getListTopic, getListClass, onLogin, getInfoUser, showSnackbar, getAvatar };
     const action = bindActionCreators(actionsCreator, dispatch);
     return { ...action };
 }

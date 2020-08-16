@@ -16,7 +16,8 @@ import { bindActionCreators } from 'redux';
 import { TestService } from '../../service/test.service'
 import MyPicker from '../../shared/components/my-picker'
 import { showSnackbar } from '../../redux/actionCreator/actionCreator';
-import { MESSAGE_COMMON } from '../../constants/message.constants'
+import { MESSAGE_COMMON } from '../../constants/message.constants';
+import jsPDF from 'jspdf';
 
 interface ICreateTest {
     openDialog: boolean;
@@ -25,7 +26,7 @@ interface ICreateTest {
     ngay_thi: Date;
     thoi_gian_thi: string;
     ds_cau_hoi: IMyQuestion[];
-    // diem: string;
+    diem: string;
     topic: Dropdown[],
     onDisabled: boolean;
 
@@ -56,6 +57,7 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
             tieu_de: "",
             onDisabled: false,
             thoi_gian_thi: "",
+            diem: "",
         }
     }
 
@@ -86,7 +88,7 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
                 this.setState(res);
             }
         });
-        this.setState({onDisabled: true})
+        this.setState({ onDisabled: true })
 
     }
 
@@ -247,6 +249,11 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
         });
     }
 
+    generatePDF = () => {
+        var doc = new jsPDF('p', 'pt');
+
+        doc.save('demo.pdf')
+    }
     //quay trở lại trang quản lý bài thi
     onGoBack = () => {
         history.goBack();
@@ -294,6 +301,21 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
                         inputVariant="outlined"
                         format='MM/dd/yyyy HH:mm:ss'
                     />
+                    <MyInput
+                        label="Điểm bài thi"
+                        onChange={(value: string) => this.setState({ diem: value })}
+                        value={this.state.diem}
+                        type="number"
+                        variant="outlined"
+                        fullWidth
+                    />
+                </div>
+                <div className="btn-pdf">
+                    <MyButton
+                        label="Download PDF"
+                        color="secondary"
+                        onClick={this.generatePDF}
+                    />
                 </div>
                 <div className="btn-create">
                     <MyButton
@@ -309,6 +331,8 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
                             onClick={this.toggleDialog}
                         />
                     </div>
+
+
                     <div className="go-back">
                         <MyButton
                             label="Quay lại"
@@ -316,6 +340,8 @@ class TestDetailScreen extends Component<ITestDetail, ICreateTest> {
                             onClick={this.onGoBack}
                         />
                     </div>
+
+
                 </div>
 
                 {this.state.openDialog && <AppQuestionDialog

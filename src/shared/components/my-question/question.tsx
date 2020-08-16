@@ -86,7 +86,7 @@ export default class MyQuestion extends Component<IMyQuestion, {}>{
                             variant="outlined"
                         />
                 }
-                  {/* <MyInput
+                  <MyInput
                         label = "Điểm câu hỏi bài thi"
                         onChange={() => null}
                         value={this.props.diem}
@@ -94,7 +94,7 @@ export default class MyQuestion extends Component<IMyQuestion, {}>{
                         rowsMax={3}
                         fullWidth
                         variant="outlined"
-                    /> */}
+                    />
             </BoxContainer >
         )
     }

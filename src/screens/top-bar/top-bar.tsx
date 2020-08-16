@@ -13,12 +13,15 @@ import ProgressBar from '../../shared/components/my-progressbar';
 import { onLoading } from '../../redux/actionCreator/actionCreator';
 import { Link } from 'react-router-dom';
 import { APP_ROUTER } from '../../constants/router.constants';
+import {getAvatar} from '../../redux/actionCreator/actionCreator';
 
 interface ITopBar {
     logged?: boolean;
     onClickMenu: Function;
     onLoading?: any;
     isLoading?: boolean;
+    avatar?: string,
+    getAvatar?: any
 }
 class TopBarComponent extends Component<ITopBar, {}> {
 
@@ -65,6 +68,7 @@ const mapStateToProps = (state: any) => {
     return {
         logged: state.data.logged,
         isLoading: state.data.isLoading,
+        avatar: state.data.avatar,
     };
 };
 

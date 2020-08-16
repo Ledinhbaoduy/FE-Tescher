@@ -80,7 +80,7 @@ interface FullState {
       super(props);
       this.state = {
         open: false,
-        sources: '',
+        sources: null,
         students: [],
         files: [],
         questions: [],
@@ -165,14 +165,22 @@ interface FullState {
     // }
 
     getTest = (s_id:any) => {
-      console.log('đang chạy');
-      this.setState({isLoading: true})
+      this.setState({isLoading: true, sources: null})
         this.mService.getTestOfStudent(s_id, this.props.id).subscribe(res => {
-            console.log(res);
-            this.setState({isLoading: false, sources: res})
-            if(res && res.da_cham_diem){
-              
+            //console.log(res);
+            this.setState({isLoading: false})
+            if(res){
+              if(res._id&&res.da_cham_diem){
+                this.setState({disabled: true, sources: res})
+              }
+              else if(res._id){
+                this.setState({sources: res})
+              }
+              else{
+                this.setState({text_message: 'Không có thông tin'});
+              }
             }
+            
             if(!res){
               this.setState({text_message: 'Không có thông tin'});
             }

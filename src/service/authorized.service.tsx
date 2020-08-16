@@ -20,6 +20,15 @@ export default class AuthorizedService {
         localStorage.setItem(LOCAL_STORAGE.USER_INFO, user);
     }
 
+    setAvatar = (id: string) =>{
+        localStorage.setItem('AVATAR', id);
+    }
+
+    getAvatar = () => {
+        let id = localStorage.getItem('AVATAR');
+        return `http://localhost:3001/api/file/${id}`
+    }
+
     getIdUsers(): string {
         let user = localStorage.getItem(LOCAL_STORAGE.USER_INFO) || "";
         if (user) {

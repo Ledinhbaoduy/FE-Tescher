@@ -103,7 +103,7 @@ class ExamScreen extends Component<IExamProps, IExamState>{
         this.eService.getById(id).subscribe(res => {
             const diem = res.diem
             const files = res.tap_tin.length > 0 ? res.tap_tin.map((x: any) => <div><Button variant='outlined' startIcon={<InsertDriveFileIcon />}>
-                <a href={`https://anstudying.herokuapp.com/api/file/view-file/${x.fileName}`} target='_blank'>{x.fileName}</a></Button></div>) : 'Không có tệp đính kèm'
+                <a href={`https://anstudying.herokuapp.com/api/file/file/${x.fileName}`} target='_blank'>{x.originName}</a></Button></div>) : 'Không có tệp đính kèm'
             const noi_dung = res.noi_dung ? res.noi_dung.split('\\n')
                 .map((x: any) => <div>{x}<br></br></div>) : ''
             this.setState({
@@ -187,7 +187,7 @@ class ExamScreen extends Component<IExamProps, IExamState>{
                 </div>
                 <div className="col col-lg-2" ></div>
                 <Prompt open={this.state.isPShow} handleClose={this.onPClose} removed={this.removed} title={'Xóa bài tập'} />
-                <InfoDialog open={this.state.infoShow} onClose={this.onInfoClose} title={this.state.info.title} children={this.state.info.content} />
+                <InfoDialog fullWidth open={this.state.infoShow} onClose={this.onInfoClose} title={this.state.info.title} children={this.state.info.content} />
             </div>
         )
     }

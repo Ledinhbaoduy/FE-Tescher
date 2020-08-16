@@ -18,7 +18,7 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import ExamService from '../../../service/private/exam.service';
 import AuthorService from '../../../service/authorized.service';
 import appService from '../../../service/app.service';
-import { Icon, InputLabel, TextField } from '@material-ui/core';
+import { Icon, InputLabel, TextField, LinearProgress } from '@material-ui/core';
 import BoxContainer from '../box-container/box-container';
 import AttachmentIcon from '@material-ui/icons/Attachment';
 import { InputField } from '../../../models/common.model';
@@ -59,6 +59,7 @@ interface FullState {
   disabled: boolean,
   show_alert: boolean
   error: string,
+  loading: boolean,
 }
  class FullScreenDialog extends Component<FullProps, FullState> {
   
@@ -80,6 +81,7 @@ interface FullState {
         disabled: false,
         show_alert: false,
         error: '',
+        loading: false,
       }
     }
 
@@ -96,7 +98,7 @@ interface FullState {
           this.setState({error: 'Thông tin nội dung không hợp lệ'})
           return false
         }
-        if(this.state.score.length <=0 && this.props.editInfo.score.length <=0){
+        if(this.state.score.length <=0 && this.props.editInfo.score.length <=0 || this.state.score <= '0'){
           this.setState({error: 'Thông tin điểm không hợp lệ'})
           return false
         }
@@ -112,9 +114,14 @@ interface FullState {
     }
 
     onFileDialog = (file: ChangeEvent<HTMLInputElement>|any) => {
-      
-      this.state.files.push(file.target.files[0]);
-      this.setState({files: this.state.files});
+      this.setState({loading: true})
+      var formData = new FormData()
+      formData.append('file', file.target.files[0], file.target.files[0].name)
+      Axios.post('http://anstudying.herokuapp.com/api/file/file/upload', formData).then(res => {
+        this.setState({loading: false})
+        this.state.files.push({id: res.data.data.id, name: res.data.data.name});
+        this.setState({files: this.state.files})
+      }).catch(err => console.log(err));
     }
     setStatus = (a:boolean, text:string, dis:boolean, alert?: boolean) => {
       this.setState({
@@ -128,7 +135,7 @@ interface FullState {
       this.setStatus(false, 'Đang Lưu', true)
       if(!this.isValid()) {this.setStatus(true, 'Lưu', false, true); return;}
       const tap_tin:any = [];
-      //this.state.files.map((x:any) => tap_tin.push({fileName: x.name}));
+      this.state.files.map((x:any) => tap_tin.push({fileName: x.id, originName: x.name}));
       var body = {}
       if(this.props.mode === 'add'){
         body = {
@@ -179,8 +186,15 @@ interface FullState {
         content: '',
         date: '',
         score:'',
-        saveText: 'Lưu'
+        saveText: 'Lưu',
+        files:[],
+        loading: false,
       })
+    }
+
+    onDeleteFile = (index:any) => {
+      this.state.files.splice(index,1);
+      this.setState({files: this.state.files})
     }
 
     handleClose = () => {
@@ -212,7 +226,7 @@ interface FullState {
             </Toolbar>
             
           </AppBar>
-          
+          {this.state.loading ? <LinearProgress /> : ''}
           <BoxContainer>
           <Alert hidden={!this.state.show_alert} color='error'>{this.state.error}</Alert>
               <div className="input-data">
@@ -266,7 +280,7 @@ interface FullState {
                           </label>
                          
                       </div>
-                      {this.state.files.map((x:any) => <div> <Button startIcon={<InsertDriveFileIcon />} variant='outlined'>{x.name !=='' ? x.name : ''}</Button></div>)}
+                      {this.state.files.map((x:any, index:any) => <div> <Button startIcon={<InsertDriveFileIcon />} variant='outlined'>{x.name !=='' ? x.name : ''}</Button><Button onClick={()=> this.onDeleteFile(index)}>Xóa</Button></div>)}
                   </div>
                   
               </div>

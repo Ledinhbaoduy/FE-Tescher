@@ -56,7 +56,7 @@ class ManageQuestionScreen extends Component<{ listTopic: any, isLogged?: boolea
                     { value: 'answerD', title: 'Đáp Án D' },
                     { value: 'answer', title: 'Đáp Án Đúng' },
                     { value: 'topic', title: 'Chủ Đề' },
-                    { value: 'score', title: 'Điểm' },
+                    // { value: 'score', title: 'Điểm' },
                     { value: 'createdBy', title: 'Người Tạo' },
                     { value: 'createdAt', title: 'Ngày Tạo' },
                     { value: 'updatedAt', title: 'Ngày Cập Nhật' },
@@ -73,7 +73,7 @@ class ManageQuestionScreen extends Component<{ listTopic: any, isLogged?: boolea
                 columns: [
                     { value: 'question', title: 'Câu Hỏi' },
                     { value: 'topic', title: 'Chủ Đề' },
-                    { value: 'score', title: 'Điểm' },
+                    // { value: 'score', title: 'Điểm' },
                     { value: 'createdBy', title: 'Người Tạo' },
                     { value: 'updatedAt', title: 'Ngày Cập Nhật' },
                     { value: 'createdAt', title: 'Ngày Tạo' },
@@ -312,7 +312,7 @@ class ManageQuestionScreen extends Component<{ listTopic: any, isLogged?: boolea
                     <div className="search">
                         <MyInput
                             variant="outlined"
-                            label='tìm kiếm câu hỏi'
+                            label='Tìm kiếm câu hỏi'
                             value={this.state.title}
                             onChange={(value: string) => this.setState({ title: value })} />
                     </div>

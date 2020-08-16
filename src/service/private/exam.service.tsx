@@ -27,4 +27,5 @@ export default class ExamService {
     softDeleteEx = (id: any) : Observable<any> => {
         return this.appService.post(API_EXAM.DELETE,{id: id});
     }
+
 }

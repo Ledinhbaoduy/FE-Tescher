@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import MyDialog from '../../shared/components/my-dialog/my-dialog';
 import { MyInput } from '../../shared/components/my-input/my-input';
-import { DialogActions } from '@material-ui/core';
+import { DialogActions, Button } from '@material-ui/core';
 import MyButton from '../../shared/components/my-button/my-button';
 import { Dropdown, InputField, VARIANT_TYPE } from '../../models/common.model';
 import { Guid } from 'guid-typescript';
@@ -14,6 +14,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { QuestionService } from '../../service/question.service';
 import { showSnackbar } from '../../redux/actionCreator/actionCreator';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import AttachmentIcon from '@material-ui/icons/Attachment';
 
 interface IDialogProps {
     openDialog: boolean,
@@ -39,6 +41,7 @@ export interface IManageQuestionDialogState {
     nguoi_tao_id: string,
     isLoading: boolean;
     type: Dropdown;
+    files: any,
 }
 
 const initState = {
@@ -56,6 +59,7 @@ const initState = {
     nguoi_tao_id: '',
     isLoading: false,
     type: QUESTION_TYPE[0],
+    files: [],
 }
 class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialogState> {
     private commonService = new CommonService();
@@ -188,22 +192,22 @@ class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialog
             });
             return false;
         }
-        else if (!this.state.diem ) {
-            this.props.showSnackbar({
-                message: "bạn chưa điền vào điểm!",
-                variant: VARIANT_TYPE.WARNING,
-                open: true
-            });
-            return false;
-        }
-        else if(this.state.diem <=0 || this.state.diem > 10){
-            this.props.showSnackbar({
-                message: "bạn phải nhập điểm bé hơn 10 và không được bé hơn 0!",
-                variant: VARIANT_TYPE.WARNING,
-                open: true
-            });
-            return false;
-        }
+        // else if (!this.state.diem) {
+        //     this.props.showSnackbar({
+        //         message: "bạn chưa điền vào điểm!",
+        //         variant: VARIANT_TYPE.WARNING,
+        //         open: true
+        //     });
+        //     return false;
+        // }
+        // else if (this.state.diem <= 0 || this.state.diem > 10) {
+        //     this.props.showSnackbar({
+        //         message: "bạn phải nhập điểm bé hơn 10 và không được bé hơn 0!",
+        //         variant: VARIANT_TYPE.WARNING,
+        //         open: true
+        //     });
+        //     return false;
+        // }
         else {
             const invalid = this.state.lua_chon.some(s => s.value === "");
             const missingLabel = this.state.lua_chon.filter(s => s.value === "").map(s => ' ' + s.label);
@@ -264,6 +268,12 @@ class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialog
         this.setState(initState);
         this.props.toggleDialog();
     }
+    
+    onFileDialog = (file: ChangeEvent<HTMLInputElement>|any) => {
+      
+        this.state.files.push(file.target.files[0]);
+        this.setState({files: this.state.files});
+      }
 
     render() {
         const correctAnswers = this.state.lua_chon.map(s => ({ id: s.id, value: s.label! }));
@@ -279,6 +289,17 @@ class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialog
             >
                 <BoxContainer>
                     <div className="input-data">
+                        <div className='menu-info'>
+                            <input accept="image/*" className="btn-upload" id="icon-button-file" type="file" onChange={this.onFileDialog}
+                                style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
+                            />
+                            <label htmlFor='icon-button-file'>
+                                <Button variant='outlined' color='default' arial-label='upload picture' component='span' startIcon={<AttachmentIcon />}>
+                                    Thêm tệp
+                               </Button>
+                            </label>
+                        </div>
+                        {this.state.files.map((x: any) => <div> <Button startIcon={<InsertDriveFileIcon />} variant='outlined'>{x.name !== '' ? x.name : ''}</Button></div>)}
                         <div className='name-question'>
                             <MyInput
                                 label="câu hỏi"
@@ -315,7 +336,7 @@ class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialog
                         </div>
 
                         <div className="score">
-                            <MyInput
+                            {/* <MyInput
                                 label="Điểm"
                                 onChange={(e: number) => this.setState({ diem: e })}
                                 value={this.state.diem}
@@ -324,7 +345,7 @@ class ManageQuestionDialog extends Component<IDialogProps, IManageQuestionDialog
                                 fullWidth
                                 variant="standard"
                                 inputRef={(e: number) => this.state.diem === e}
-                            />
+                            /> */}
 
                         </div>
                     </div>

@@ -6,6 +6,7 @@ export const initState = {
     logged: false,
     isLoading: false,
     snackbar: new SnackbarModel(),
+    avatar: '',
 };
 
 const data = (state = initState, action: any) => {
@@ -22,6 +23,8 @@ const data = (state = initState, action: any) => {
             return { ...state, userInfo: action.data };
         case ACTION_TYPES.SHOW_SNACKBAR:
             return { ...state, snackbar: action.data };
+        case ACTION_TYPES.AVATAR:
+            return {...state, avatar: action.data}
         default:
             return { ...state };
     }

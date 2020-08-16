@@ -40,3 +40,10 @@ export const showSnackbar = (data: any) => {
         data,
     }
 }
+
+export const getAvatar = (data: string) => {
+    return {
+        type: ACTION_TYPES.AVATAR,
+        data: `http://anstudying.herokuapp.com/api/file/avatar/${data}`,
+    }
+}

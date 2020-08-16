@@ -79,7 +79,7 @@ interface FullState {
       super(props);
       this.state = {
         open: false,
-        sources: '',
+        sources: null,
         students: [],
         isMark: false,
         //files: [],
@@ -126,29 +126,36 @@ interface FullState {
     }
 
     getEx = (s_id:any) => {
-        this.setState({isLoading: true})
+        this.setState({isLoading: true, sources:null})
+        this.reset();
         this.mService.getExOfStudent(s_id, this.props.id).subscribe(res =>{
             console.log(res)
-            this.setState({sources: res, isLoading: false});
-            if(res && res.da_cham_diem){
-              this.setState({disabled: true})
+            this.setState({isLoading: false});
+            if(res){
+              if(res._id){
+                this.setState({sources: res})
+              }
+              else if(res._id && res.da_cham_diem){
+                this.setState({disabled: true, sources: res});
+              }
+              else{
+                this.setState({text_message: 'Không có thông tin'})
+              }
             }
             if(!res){
-              
-                this.setState({text_message: 'Không có thông tin'})
+              this.setState({text_message: 'Không có thông tin'})
             }
-            //console.log(this.state.sources);
         })
     }
 
     handleSave = () => {
-      this.setState({allowClose: false, saveText: 'Đang chấm', })
+      this.setState({allowClose: false, saveText: 'Đang chấm', disabled:true})
         if(!this.isValid()){
-            this.setState({error: true, error_text: 'Điểm không hợp lệ', allowClose: true, saveText: 'Chấm điểm'})
+            this.setState({error: true, error_text: 'Điểm không hợp lệ', allowClose: true, saveText: 'Chấm điểm', disabled: false})
         }
         else{
             const body = {
-                diem: parseFloat(this.state.score),
+                diem: Number.parseFloat(this.state.score),
                 sinh_vien_id: this.state.sources.sinh_vien_id._id,
                 lop_hoc_id: this.props.c_id,
                 ex_id: this.state.sources.bai_tap_id._id,
@@ -157,12 +164,9 @@ interface FullState {
             }
             this.mService.addMark(body).subscribe(res => {
                 console.log(res);
-                this.getEx(this.state.sources.sinh_vien_id._id)
+                this.setState({allowClose: true, saveText: 'Chấm điểm'})
             })
-            //this.setState({error_text: '', error: false})
-            this.reset();
         }
-        //console.log(this.isValid())
     }
 
     reset = () => {
@@ -173,7 +177,7 @@ interface FullState {
         score:'',
         saveText: 'Chấm điểm',
         text_message: '',
-        sources: '',
+        sources: null,
         error: false,
         error_text: '',
         disabled: false,
@@ -188,11 +192,7 @@ interface FullState {
     }
 
     InputChange = (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
-        //console.log(e);
-        //let value = Number.parseInt(e.target.value);
-        console.log(e);
         this.setState({score: e.target.value})
-        //console.log(Number.isSafeInteger(value));
     }
     
   render(){

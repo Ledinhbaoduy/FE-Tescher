@@ -47,19 +47,27 @@
     .time-start-test {
         width: 40%;
         margin-right: 4px;
-
     }
 }
 
 .btn-create {
     padding: 1rem;
     display: flex;
+    margin-top: 0px;
     .btn-add {
         padding-left: 0.5rem;
     }
+
     .go-back {
         margin-left: 872px;
     }
+}
+.btn-pdf {
+    margin: initial;
+    width: 100%;
+    margin-bottom: -52px;
+    margin-left: 293px;
+    margin-top: 23px;
 }
 .test-content-dialog {
     display: flex;
@@ -74,7 +82,7 @@
         margin-left: 7px;
         width: 45%;
     }
-    .btn-search{
+    .btn-search {
         margin-left: 82px;
     }
 }

@@ -28,6 +28,7 @@ export interface UserInformation {
     sdt: string;
     gioi_tinh: boolean;
     onDisabled: boolean;
+    trang_thai: boolean;
 }
 
 

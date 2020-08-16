@@ -30,6 +30,7 @@ interface IProfileUser {
     ly_do: string;
     isLoading: boolean;
     onDisabled: boolean;
+    trang_thai: boolean;
 }
 
 class InformationUser extends Component<{ userInfo?: UserInformation, showSnackbar: any }, IProfileUser> {
@@ -49,6 +50,7 @@ class InformationUser extends Component<{ userInfo?: UserInformation, showSnackb
             gioi_tinh: false,
             sdt: "",
             onDisabled: false,
+            trang_thai: false,
 
         }
     }
@@ -100,7 +102,7 @@ class InformationUser extends Component<{ userInfo?: UserInformation, showSnackb
                 open: true,
             })
             return false;
-        }else if(this.state.sdt.length < 10 || this.state.sdt.length > 10){
+        } else if (this.state.sdt.length < 10 || this.state.sdt.length > 10) {
             this.props.showSnackbar({
                 message: "Số Điện Thoại chỉ nhập 10 số !",
                 variant: VARIANT_TYPE.WARNING,
@@ -129,6 +131,7 @@ class InformationUser extends Component<{ userInfo?: UserInformation, showSnackb
                     })
                     this.setState({ ly_do: "" });
                 }
+
             })
         }
 
